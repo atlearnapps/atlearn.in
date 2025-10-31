@@ -1,0 +1,23 @@
+.secondaryButton{
+    /* border: 1px solid #6D207B; */
+    border: 1px solid #001B48;
+
+    padding: 10px 18px;
+    /* color: #6D207B; */
+    color: #001B48;
+
+    margin-right: 10px;
+    font-weight:700 ;
+    font-size: 16px;
+    border-radius: 8px;
+}
+.secondaryButton:hover{
+    background-color: transparent;
+    /* border: 1px solid #E8063C;
+    color: #E8063C; */
+    /* border: 1px solid #018ABE;
+    color: #018ABE; */
+    border: 1px solid #6E8AF5;
+    color: #6E8AF5;
+    
+}

@@ -1,0 +1,473 @@
+/* body {
+  margin: 0;
+  padding: 0;
+} */
+.main-container {
+    /* background-color: #F5F7FB; */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* background-image: url('src/images/blue-abstract-gradient-wave-wallpaper.jpg'); */
+    /* background-color:#F7F8FA ; */
+    background-color: #FFFFFF;
+
+    background-size: cover; /* Adjust as needed */
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
+  .containers {
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+   
+  }
+  .pricecontainers {
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+   
+  }
+  .featuresContainer{
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .Container-main{
+    background-color: #F5F5F5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .main-content {
+    flex: 1;
+  
+  }
+  
+  .footer {
+    flex-shrink: 0;
+  }
+
+  .mainHeading{
+    font-weight: bold;
+    font-size: 52px;
+    line-height: 28px;
+    letter-spacing: 0.15%;
+    color:#333, ;
+  }
+  .subHeading{
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 28px;
+    letter-spacing: 0.15%;
+    /* color:#212B36; */
+  }
+
+  .subMainHeading{
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.15%;
+    /* color:#212B36; */
+    z-index: -1;
+}
+
+.buttoncontent {
+    font-weight: 700;
+   font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.15%;
+
+}
+.featuresHeader{
+    font-weight: bold;
+    font-size: 32px;
+    /* line-height: 28px;
+    letter-spacing: 0.15%; */
+    color:rgba(33, 43, 54, 0.67) ;
+    /* color: #444444; */
+    text-transform: uppercase;
+}
+
+.NavabarHeadings{
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.15%;
+    color:#1A73E8;
+
+}
+.footerMainHeading{
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    color: #ffff;
+}
+.footerSecondaryHeadings{
+    font-weight: 600;
+    font-size: 16px;
+    color: #ffff;
+}
+.adminHeadings{
+  font-weight: 400;
+  font-size: 36px;
+  color: #000000;
+}
+.tabheading{
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 29.54px;
+  color: #000000;
+}
+.contentTypography{
+  font-weight: 400;
+  font-size: 16px;
+  color: #000000;
+}
+.headerMenu{
+  font-size: 17px;
+  line-height: 23.8px;
+  color: #545962;
+
+}
+.headerMenu:hover{
+  color: #E8063C;
+}
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+
+.slick-slide > div {
+  margin: 0 10px ;
+}
+.slick-list {
+  margin: 0 -10px;
+}
+
+.spinnerButton {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top: 4px solid white;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* VideoComponent.css */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.video-container {
+  position: relative;
+  /* background: white; */
+  width: 70%;
+  padding: 20px;
+  border-radius: 10px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background: darkred;
+}
+
+
+/* Customizing the container */
+.react-datepicker {
+  border: 1px solid #4CAF50; /* Green border */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* Header styles */
+.react-datepicker__header {
+  background-color: #4CAF50; /* Green header */
+  color: white;
+  border-bottom: none;
+  padding: 10px 0;
+  text-align: center;
+  font-weight: bold;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+/* Changing the selected date background color */
+.react-datepicker__day--selected {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 50%;
+}
+
+/* Hover effect for selectable days */
+.react-datepicker__day:hover {
+  background-color: #A5D6A7; /* Lighter green on hover */
+  color: #000;
+  border-radius: 50%;
+}
+
+/* Style for the range */
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range {
+  background-color: #C8E6C9 !important; /* Light green for range */
+  color: #000;
+}
+
+/* Customizing today’s date */
+.react-datepicker__day--today {
+  font-weight: bold;
+  color: #FF5722; /* Orange text for today */
+  border: 1px solid #FF5722;
+}
+
+/* Change arrow button styles */
+.react-datepicker__navigation {
+  top: 15px;
+  line-height: 1.7rem;
+}
+
+.react-datepicker__navigation--previous {
+  border-right-color: #fff;
+}
+
+.react-datepicker__navigation--next {
+  border-left-color: #fff;
+}
+
+
+/* Styles for the custom input container */
+.custom-textfield {
+  display: flex;
+  align-items: center;
+  border: 0.5px solid #e5e7eb; /* Green border */
+  border-radius: 6px;
+  padding: 5px 10px;
+  background-color:transparent; /* Light background */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 250px;
+  height: 55px;
+  margin-top: 9px; /* Adjust the width */
+}
+
+/* Styles for the input field */
+.custom-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Calendar icon styles */
+.calendar-icon {
+  margin-left: 10px;
+  font-size: 18px;
+  color: #4CAF50; /* Match the border color */
+}
+
+.custom-textfield:hover {
+  border-color: #FF5722; /* Orange border on hover */
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Orange glow */
+}
+
+.custom-textfield:focus-within {
+  border-color: #FF5722; /* Orange border on focus */
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.5); /* Orange glow */
+}
+
+
+
+.quill-preview ul {
+  list-style-type: disc
+}
+.quill-preview ol {
+  list-style-type: decimal;
+}
+
+.quill-preview ul, .quill-preview ol {
+  margin: 1em 0;
+  padding-left: 2em;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: #4a5568; 
+ 
+}
+
+
+.quill-preview ul li, .quill-preview ol li {
+  margin: 0.5em 0;
+  
+}
+
+/* fteststs */
+
+.quill-preview h1 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: bold;
+  color: #1a202c; /* Dark mode fallback */
+}
+
+.dark .quill-preview h1 {
+  color: #e2e8f0; /* Light text for dark mode */
+}
+
+.quill-preview h2 {
+  font-size: 1.5rem; /* Adjust size */
+  font-weight: 600;
+  color: #2d3748; /* Dark mode fallback */
+}
+
+.dark .quill-preview h2  {
+  color: #cbd5e0; /* Light text for dark mode */
+}
+
+.quill-preview p  {
+  font-size: 0.875rem; /* Small text for mobile */
+  font-size: 1rem; /* Base text size for medium screens */
+  color: #4a5568; /* Default text color */
+  margin-bottom: 1rem;
+}
+
+.dark .quill-preview p {
+  color: #a0aec0; /* Light text for dark mode */
+}
+
+.dark .quill-preview ul li , ol li  {
+  color: #cbd5e0; /* Light text for dark mode */
+}
+
+@media (min-width: 768px) {
+  .quill-preview h1 {
+    font-size: 2rem;
+  }
+  .quill-preview h2 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+
+
+
+.cloud {
+  /* color: #fff; */
+  width: 120px;
+  height: 35px;
+  /* background: #6E8AF5; */
+  /* background: linear-gradient(to bottom, #6E8AF5 0%,  #98a8e0 100%); */
+  background: linear-gradient(to bottom, #98a8e0 0%,  #6E8AF5 100%);
+
+  border-radius: 100px;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+
+
+.cloud:after,
+.cloud:before {
+  content: '';
+  position: absolute;
+  /* background: #6E8AF5; */
+  /* background: linear-gradient(to bottom, #6E8AF5 80%,  #98a8e0 100%); */
+  background: linear-gradient(to bottom, #98a8e0 80%,  #6E8AF5 100%);
+
+  z-index: -1;
+  width: 45px;
+  height: 45px;
+  border-radius: 100px;
+}
+
+.cloud:after {
+  top: -16px;
+  left: 21px;
+}
+
+.cloud:before {
+  top: -25px;
+  right: 16px;
+}
+
+.cloud span {
+  position: absolute;
+  /* background: #6E8AF5; */
+  /* background: linear-gradient(to bottom, #6E8AF5 0%,  #98a8e0  0%); */
+  background: linear-gradient(to bottom, #98a8e0 0%,  #6E8AF5  0%);
+
+  width: 45px;
+  height: 45px;
+  border-radius: 100px;
+  z-index: -1;
+}
+
+.cloud .bottom-left {
+  bottom: -12px;
+  left: 21px;
+}
+
+.cloud .bottom-right {
+  bottom: -15px;
+  right: 16px;
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+.passwordcheck ul li{
+  font-size:12px;
+}
+.errorField{
+  border: solid 1px red;
+  border-radius: 4px;
+} 

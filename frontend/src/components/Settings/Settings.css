@@ -1,0 +1,37 @@
+.headcolor{
+    color: #467FCF;
+}
+.deletRoom{
+    border: 1px solid red;
+    padding: 10px 20px;
+    color: red;
+    margin-top: 10px;
+}
+.deletRoom:hover{
+    background-color: #F5F7FB;
+}
+.userSetting{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2;
+    
+}
+.deletebox{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+@media (max-width: 480px){
+    .deletebox{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+    }
+    .deletRoom{
+        padding: 10px 80px;
+    }
+
+}

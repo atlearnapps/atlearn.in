@@ -1,0 +1,22 @@
+.mainButton{
+    /* border: 1px solid #490d59; */
+    border: 1px solid #001B48;
+    padding: 10px 18px;
+    color: #ffff;
+    /* background-color: #490d59; */
+    background-color: #001B48;
+
+
+    font-weight:700 ;
+    font-size: 16px;
+    border-radius: 8px;
+
+}
+.mainButton:hover{
+    /* background-color: #E8063C; */
+    /* background-color: #018ABE; */
+    background-color: #6E8AF5;
+
+
+   
+}

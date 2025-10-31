@@ -1,0 +1,10 @@
+.secondButton{
+    border: 1px solid rgb(220, 220, 220);
+    padding: 10px 20px;
+    color: #467FCF;
+    margin-right: 10px;
+}
+.secondButton:hover{
+    background-color: #F5F7FB;
+    border: 1px solid #467FCF;
+}

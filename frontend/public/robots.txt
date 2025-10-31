@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /organization/
+Disallow: /organization/admin
+Disallow: /organization/dashboard
+Disallow: /organization/users
+Disallow: /organization/server-rooms
+Disallow: /organization/server-recordings
+Disallow: /organization/site-settings
+Disallow: /organization/room-configuration
+Disallow: /organization/roles
+Disallow: /organization/monitor
+Disallow: /organization/subscription-plans
+Disallow: /organization/alltransactions
+
+Sitemap: https://www.atlearn.in/sitemap.xml

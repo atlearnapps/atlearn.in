@@ -1,0 +1,11 @@
+.removeButton{
+    border: 1px solid red;
+    padding: 10px 20px;
+    color: white;
+    background-color: #cd201f;
+    font-weight:700 ;
+    font-size: 16px;
+}
+.removeButton:hover{
+    background-color:rgb(209, 40, 40) ;
+}
