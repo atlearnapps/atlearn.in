@@ -1,16 +1,34 @@
 import express from 'express';
-import bodyParser from "body-parser";
+import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJsdoc from 'swagger-jsdoc';
+import path from 'path';
+import morgan from 'morgan';
+import compression from 'compression';
+import cors from 'cors';
+
+// Security Imports
+import { 
+    limiter, 
+    authLimiter, 
+    corsOptions, 
+    securityHeaders 
+} from './middleware/security.js';
+
+// Error Handler
+import { errorHandler } from './middleware/errorHandler.js';
+
+// Database
+import sequelize from './database.js';
+import { Data } from './data.js';
+
+// Routes
 import userRouter from './routes/userRoutes.js';
 import bigbluebuttonRouter from './routes/bigbluebuttonRoutes.js';
 import siteSettingsRouter from './routes/siteSettingsRoutes.js';
 import roomConfigRouter from './routes/roomConfigRoutes.js';
-import sequelize from './database.js';
-import { Data } from './data.js';
-import roomRouter from "./routes/roomRoutes.js";
+import roomRouter from './routes/roomRoutes.js';
 import rolePermissionRouter from './routes/rolePermissionRoutes.js';
 import sessionRoutes from './routes/sessionRoutes.js';
 import externalUerRouter from './controller/externalUserController.js';
@@ -18,13 +36,9 @@ import dashboardRouter from './routes/dashboardRoutes.js';
 import pricingRouter from './routes/pricingRoutes.js';
 import checkoutRouter from './routes/checkoutRoutes.js';
 import zoomRouters from './routes/zoomRoutes.js';
-import path from 'path';
 import analyticsDashboardRoutes from './routes/analyticsDashboardRoutes.js';
 import notificationRouter from './routes/notificationRoutes.js';
 import oauthClientsRoutes from './routes/oauthClientsRoutes.js';
-// import { checkScheduleMeeting } from './services/Notifications/notifications.js';
-// import { processExpiredUsers } from './services/Subscription/Subscription.js';
-// import cron from "node-cron";
 import aiAssistantRouter from './routes/aiAssistantRoutes.js';
 import auth0Router from './routes/auth0Routes.js';
 
@@ -69,41 +83,52 @@ const options = {
   
 const specs = swaggerJsdoc(options);
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-async function initializeDatabase() {
-  try {
-    console.log('authenticate')
-    await sequelize.authenticate();
-    console.log('Connection to the database has been established successfully.');
+// Apply security middleware
+app.use(securityHeaders);
+app.use(cors(corsOptions));
+app.use('/api', limiter);
+app.use('/api/auth', authLimiter);
 
-    // Create the database if it doesn't exist
-    // await sequelize.queryInterface.createDatabase('farlanes', { ifNotExists: true });
+// Apply general middleware
+app.use(morgan('dev'));
+app.use(compression());
+app.use(bodyParser.urlencoded({ extended: false, limit: '10mb' }));
+app.use(bodyParser.json({ limit: '10mb' }));
 
-    // Synchronize the models with the database
-    await sequelize.sync({ alter: true });
-    console.log('Database synchronized.');
-    Data()
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-}
-// sequelize.sync().then(() => {
-//     console.log("db is ready")
-//     Data()
-// });
-initializeDatabase()
-const HTTP_PORT = process.env.HTTP_PORT;
-app.listen(HTTP_PORT, ()=> {
-    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
-})
-// Root path
-app.get("/", (req, res, next) => {
-    res.json({"message":"Ok"})
+// Health check endpoint
+app.get('/health', (req, res) => {
+    res.status(200).json({
+        status: 'healthy',
+        timestamp: new Date().toISOString()
+    });
 });
-app.use(cors({
-    origin: '*'
-}));
+
+async function initializeDatabase() {
+    try {
+        console.log('Authenticating database connection...');
+        await sequelize.authenticate();
+        console.log('Database connection established successfully.');
+
+        if (process.env.NODE_ENV === 'development') {
+            await sequelize.sync({ alter: true });
+            console.log('Database schema synchronized.');
+            await Data();
+            console.log('Initial data seeded.');
+        }
+    } catch (error) {
+        console.error('Database initialization failed:', error);
+        process.exit(1);
+    }
+}
+
+async function startServer() {
+    await initializeDatabase();
+
+    const HTTP_PORT = process.env.HTTP_PORT || 3000;
+    app.listen(HTTP_PORT, () => {
+        console.log(`Server running on port ${HTTP_PORT} in ${process.env.NODE_ENV} mode`);
+    });
+}
 
 
 // Schedule to run every minute
@@ -113,28 +138,61 @@ app.use(cors({
 // cron.schedule("0 0 * * *", processExpiredUsers);
 
 
+// Static file serving
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
-app.use(express.static('upload'));
-app.use('/api/images', express.static(path.join(__dirname, 'upload/Images')));
-app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs,swaaggerUiOptions));
-app.use('/api/user',userRouter);
-app.use("/api/room", roomRouter);
-app.use('/api/site_settings',siteSettingsRouter);
-app.use('/api/room_configuration',roomConfigRouter);
-app.use('/api/role_permission',rolePermissionRouter);
-app.use('/api/bbb',bigbluebuttonRouter);
-app.use('/api/session',sessionRoutes);
-app.use('/api',externalUerRouter)
-app.use('/api/dashboard',dashboardRouter);
-app.use('/api/pricing',pricingRouter);
-app.use('/api/checkout',checkoutRouter);
-app.use('/api/notification',notificationRouter);
-app.use('/api/analytics_dashboard',analyticsDashboardRoutes);
-app.use('/api/zoom',zoomRouters);
-app.use('/api/oauth', oauthClientsRoutes);
-app.use('/api/ai_assistant', aiAssistantRouter);
-app.use('/api/auth0/users',auth0Router);
+app.use('/static', express.static('upload', {
+    maxAge: '1d',
+    etag: true
+}));
+app.use('/api/images', express.static(path.join(__dirname, 'upload/Images'), {
+    maxAge: '1d',
+    etag: true
+}));
+
+// API Documentation
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs, swaaggerUiOptions));
+
+// API Routes
+const apiRoutes = [
+    { path: '/user', router: userRouter },
+    { path: '/room', router: roomRouter },
+    { path: '/site_settings', router: siteSettingsRouter },
+    { path: '/room_configuration', router: roomConfigRouter },
+    { path: '/role_permission', router: rolePermissionRouter },
+    { path: '/bbb', router: bigbluebuttonRouter },
+    { path: '/session', router: sessionRoutes },
+    { path: '/dashboard', router: dashboardRouter },
+    { path: '/pricing', router: pricingRouter },
+    { path: '/checkout', router: checkoutRouter },
+    { path: '/notification', router: notificationRouter },
+    { path: '/analytics_dashboard', router: analyticsDashboardRoutes },
+    { path: '/zoom', router: zoomRouters },
+    { path: '/oauth', router: oauthClientsRoutes },
+    { path: '/ai_assistant', router: aiAssistantRouter },
+    { path: '/auth0/users', router: auth0Router }
+];
+
+// Register all routes with /api prefix
+apiRoutes.forEach(({ path, router }) => {
+    app.use(`/api${path}`, router);
+});
+
+// Register external user routes
+app.use('/api', externalUerRouter);
+
+// Error Handling
+app.use((req, res, next) => {
+    next(new APIError(`Cannot find ${req.originalUrl} on this server`, 404));
+});
+
+app.use(errorHandler);
+
+// Start the server
+startServer().catch(err => {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+});
 
 
 

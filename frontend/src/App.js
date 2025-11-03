@@ -1,65 +1,77 @@
-import { BrowserRouter } from "react-router-dom";
-import { HelmetProvider } from "react-helmet-async";
-import { ToastContainer } from "react-toastify";
-import AOS from "aos";
-import "aos/dist/aos.css";
-import "react-toastify/dist/ReactToastify.css";
-// routes
-import Router from "./routes";
-// theme
-import ThemeProvider from "./theme";
-// components
-import { StyledChart } from "./components/chart";
-import ScrollToTop from "./components/scroll-to-top";
-import "./App.css";
-import { Provider } from "react-redux";
-import store from "../src/Redux/store";
-// import { useRef } from 'react';
-// import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
-import { useEffect } from "react";
-import Preloader from "./components/New components/Preloader/Preloader";
-import AppWrapper from "./utils/UseAuth/AppWrapper";
-// import { useAuth0 } from "@auth0/auth0-react";
-// import { useAuth0 } from "@auth0/auth0-react";
-// ----------------------------------------------------------------------
+import { BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import { ToastContainer } from 'react-toastify';
+import { Provider } from 'react-redux';
+import { Suspense, lazy, useEffect } from 'react';
+import AOS from 'aos';
 
+// Styles
+import 'aos/dist/aos.css';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+
+// Redux
+import store from './Redux/store';
+
+// Components
+import ErrorBoundary from './components/ErrorBoundary';
+import LoadingState from './components/LoadingState';
+import ScrollToTop from './components/scroll-to-top';
+import { StyledChart } from './components/chart';
+
+// Lazy loaded components
+const ThemeProvider = lazy(() => import('./theme'));
+const Router = lazy(() => import('./routes'));
+const AppWrapper = lazy(() => import('./utils/UseAuth/AppWrapper'));
+
+/**
+ * Main App component that sets up the application with providers and routing
+ */
 export default function App() {
-  // const { isLoading,user } = useAuth0();
-
-  // const tawkMessengerRef = useRef();
   useEffect(() => {
+    // Initialize animations
     AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: true, // Whether animation should happen only once
+      duration: 1000,
+      once: true,
+      disable: window.innerWidth < 768, // Disable on mobile for better performance
     });
+
+    // Register service worker
+    if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production') {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js');
+      });
+    }
   }, []);
 
-
   return (
-    <Provider store={store}>
-      <HelmetProvider>
-        <BrowserRouter>
-          <ThemeProvider>
-            <ScrollToTop />
-            <StyledChart />
-            <ToastContainer />
-            <Preloader />
-            {/* {isAuthenticated && <SaveUser />} */}
-            {/* <KeycloakProvider client={authInstance}> */}
-            <AppWrapper>
-            <Router />
-            </AppWrapper>
-
-            {/* </KeycloakProvider> */}
-            {/* <div className="App">
-              <TawkMessengerReact
-                propertyId="6630a4e71ec1082f04e91599"
-                widgetId="1hsn08aa9"
-              />
-            </div> */}
-          </ThemeProvider>
-        </BrowserRouter>
-      </HelmetProvider>
-    </Provider>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <HelmetProvider>
+          <BrowserRouter>
+            <Suspense fallback={<LoadingState fullscreen />}>
+              <ThemeProvider>
+                <ScrollToTop />
+                <StyledChart />
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                />
+                <AppWrapper>
+                  <Router />
+                </AppWrapper>
+              </ThemeProvider>
+            </Suspense>
+          </BrowserRouter>
+        </HelmetProvider>
+      </Provider>
+    </ErrorBoundary>
   );
 }
